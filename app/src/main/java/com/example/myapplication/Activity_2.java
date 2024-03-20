@@ -4,6 +4,8 @@ import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.Manifest;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.myapplication.views.CameraPreview;
 
@@ -102,7 +106,9 @@ public class Activity_2 extends AppCompatActivity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "image.jpg");
+            Log.w("path", mediaStorageDir.getPath() + File.separator +
+                    "image.jpg");
         } else {
             return null;
         }
@@ -191,6 +197,18 @@ public class Activity_2 extends AppCompatActivity {
     }
 
     /** A safe way to get an instance of the Camera object. */
+
+    public void viewpic(View view){
+        ImageView mImageView = findViewById(R.id.imageView);;
+        File imgFile = new File("/storage/emulated/0/Pictures/MyCameraApp/image.jpg");
+        if (imgFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            mImageView.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 
 
