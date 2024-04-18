@@ -82,65 +82,66 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loginFunc(View view){
+        openActivity3();
 
-        EditText uname = (EditText)findViewById(R.id.name);
-        EditText upass = (EditText)findViewById(R.id.password);
-        String username = uname.getText().toString();
-        String password = upass.getText().toString();
-        String uri = "http://10.0.2.2:5000/login";
-        MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
-        JSONObject postData = new JSONObject();
-        try {
-            postData.put("name", username);
-            postData.put("passwd", password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, postData.toString());
-
-        Request request = new Request.Builder()
-                .url(uri)
-                .post(body)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            // called if server is unreachable
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.w("server", e.getMessage());
-                        Toast.makeText(MainActivity.this, "server down", Toast.LENGTH_SHORT).show();
-//                        pagenameTextView.setText("error connecting to the server");
-                    }
-                });
-            }
-
-            @Override
-            // called if we get a 
-            // response from the server
-            public void onResponse(
-                    @NotNull Call call,
-                    @NotNull Response response)
-                    throws IOException {
-                if (response.isSuccessful()) {
-                    String responseData = response.body().string();
-                    // Do something with the response data
-                    Log.w("Response", responseData);
-                    editor.putString("name", username);
-                    editor.apply();
-                    String myname = sharedPref.getString("name", "default");
-                    Log.w("shared preference", myname);
-                    openActivity3();
-
-                } else {
-                    // Handle unsuccessful response
-                    Log.w("Response", "Unsuccessful: " + response);
-                }
-            }
-        });
+//        EditText uname = (EditText)findViewById(R.id.name);
+//        EditText upass = (EditText)findViewById(R.id.password);
+//        String username = uname.getText().toString();
+//        String password = upass.getText().toString();
+//        String uri = "http://10.0.2.2:5000/login";
+//        MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+//        JSONObject postData = new JSONObject();
+//        try {
+//            postData.put("name", username);
+//            postData.put("passwd", password);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, postData.toString());
+//
+//        Request request = new Request.Builder()
+//                .url(uri)
+//                .post(body)
+//                .build();
+//
+//        okHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            // called if server is unreachable
+//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.w("server", e.getMessage());
+//                        Toast.makeText(MainActivity.this, "server down", Toast.LENGTH_SHORT).show();
+////                        pagenameTextView.setText("error connecting to the server");
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            // called if we get a
+//            // response from the server
+//            public void onResponse(
+//                    @NotNull Call call,
+//                    @NotNull Response response)
+//                    throws IOException {
+//                if (response.isSuccessful()) {
+//                    String responseData = response.body().string();
+//                    // Do something with the response data
+//                    Log.w("Response", responseData);
+//                    editor.putString("name", username);
+//                    editor.apply();
+//                    String myname = sharedPref.getString("name", "default");
+//                    Log.w("shared preference", myname);
+//                    openActivity3();
+//
+//                } else {
+//                    // Handle unsuccessful response
+//                    Log.w("Response", "Unsuccessful: " + response);
+//                }
+//            }
+//        });
 
     }
 
