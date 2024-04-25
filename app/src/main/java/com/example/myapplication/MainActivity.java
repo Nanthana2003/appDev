@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loginFunc(View view){
-        openActivity3();
+        openActivity2();
 
 //        EditText uname = (EditText)findViewById(R.id.name);
 //        EditText upass = (EditText)findViewById(R.id.password);

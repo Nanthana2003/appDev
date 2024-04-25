@@ -25,6 +25,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.Manifest;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.myapplication.views.CameraPreview;
@@ -34,20 +35,26 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class Activity_2 extends AppCompatActivity {
     private Camera mCamera;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
     private CameraPreview mPreview;
+    static int i = 0;
     public Camera.PictureCallback mPicture;
     public static final int MEDIA_TYPE_IMAGE = 1;
+    private List<String> imagePathList;
+    private Image_adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_2);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted, request it
@@ -106,9 +113,10 @@ public class Activity_2 extends AppCompatActivity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "image.jpg");
+                    "image"+i+".jpg");
             Log.w("path", mediaStorageDir.getPath() + File.separator +
-                    "image.jpg");
+                    "image"+i+".jpg");
+            i+=1;
         } else {
             return null;
         }
@@ -199,15 +207,36 @@ public class Activity_2 extends AppCompatActivity {
     /** A safe way to get an instance of the Camera object. */
 
     public void viewpic(View view){
-        ImageView mImageView = findViewById(R.id.imageView);;
-        File imgFile = new File("/storage/emulated/0/Pictures/MyCameraApp/image.jpg");
-        if (imgFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            mImageView.setImageBitmap(bitmap);
-        } else {
-            Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show();
+        imagePathList = getImagePathsFromFolder("/storage/emulated/0/Pictures/MyCameraApp");
+        Log.w("gallery", "got everything");
+        ListView listView = findViewById(R.id.listView);
+        adapter = new Image_adapter(this, imagePathList);
+        listView.setAdapter(adapter);
+//        ImageView mImageView = findViewById(R.id.imageView);;
+//        File imgFile = new File("/storage/emulated/0/Pictures/MyCameraApp/image.jpg");
+//        if (imgFile.exists()) {
+//            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//            mImageView.setImageBitmap(bitmap);
+//        } else {
+//            Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show();
+//        }
+
+    }
+
+    private List<String> getImagePathsFromFolder(String folderPath) {
+        List<String> imagePathList = new ArrayList<>();
+        File folder = new File(folderPath);
+        File[] files = folder.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+//                if (file.isFile() && isImageFile(file.getPath())) {
+                    imagePathList.add(file.getPath());
+//                }
+            }
         }
 
+        return imagePathList;
     }
 
 
